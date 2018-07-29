@@ -2,9 +2,9 @@ from flask import render_template, redirect, flash, url_for, request
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 
-from app import app
+from app import app, db
 from app.models import User, Post
-from app.forms import LoginForm
+from app.forms import LoginForm, RegistrationForm
 
 @app.route('/')
 @app.route('/index')
@@ -38,13 +38,10 @@ def login():
 
         print("before login")
         login_user(user, remember=form.remember_me.data)
-        # flash(f'Login requested for user  {form.username.data}, remember_me={form.remember_me.data}')
-        #
         next_page = request.args.get('next')
         print("Next page defined")
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('index')
-        # flash(f"Welcome back {user.username}")
         print("Trying to redirect")
         return redirect(url_for('index'))
     return render_template('login.html', form=form, title='Sign In')
@@ -54,3 +51,18 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+
+@app.route('/register', methods=['POST', 'GET'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = User(username=form.username.data, email=form.email.data)
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        flash("Congrats, you are now a registered user!")
+        return redirect(url_for('login'))
+    return render_template('register.html', title='Register', form=form)

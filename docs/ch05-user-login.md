@@ -84,3 +84,4 @@ def index():
     # [...]
     return render_template('index.html', posts=posts, title="Home")
 ```
+## User Registration
