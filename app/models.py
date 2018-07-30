@@ -1,4 +1,6 @@
 from datetime import datetime
+from hashlib import md5
+
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
@@ -23,6 +25,15 @@ class User(UserMixin, db.Model):
         self.password_hash = generate_password_hash(password)
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+    def avatar(self, size):
+        grava = 'https://gravatar.com/avatar'
+        suffix = md5(self.email.lower().encode('utf-8')).hexdigest()
+        # print(str(suffix))
+        url = f"{suffix}?d=identicon?s={size}"
+        print(url)
+        httpurl = grava + suffix + url
+
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
