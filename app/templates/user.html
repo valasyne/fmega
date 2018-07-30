@@ -11,18 +11,7 @@
 </table>
 <hr>
 {% for post in posts %}
-<table>
-  <tr>
-    <td>
-      <img src="{{ user.avatar(36) }}" alt="">
-    </td>
-    <td>
-      {{ post.author.username }} says: <strong>{{ post.body }}</strong>
-    </td>
-  </tr>
-</table>
-<p>
-</p>
+  {% include "_post.html" %}
 {% endfor %}
 
 {% endblock %}
