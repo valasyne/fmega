@@ -27,13 +27,8 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
     def avatar(self, size):
-        grava = 'https://gravatar.com/avatar/'
-        suffix = md5(self.email.lower().encode('utf-8')).hexdigest()
-        print(str(suffix))
-        url = f"{suffix}?d=identicon?s={size}"
-        httpurl = grava + url
-        print(httpurl)
-        return httpurl
+        digest = md5(self.email.lower().encode('utf-8')).hexdigest()
+        return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(digest, size)
 
 
 class Post(db.Model):
