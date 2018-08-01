@@ -1,1 +1,2 @@
 set FLASK_APP=mblog.py
+set FLASK_DEBUG=1
