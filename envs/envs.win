@@ -1,2 +1,5 @@
 set FLASK_APP=mblog.py
 set FLASK_DEBUG=1
+set MAIL_SERVER=smtp.gmail.com
+set MAIL_PORT=587
+set MAIL_USE_TLS=1
